@@ -31,7 +31,9 @@ implementation("com.zerion:mobile-sdk:<latest_version>")
 ```
 
 ## Usage
-Refer to the official documentation for examples on how to integrate and use the ZerionMobile SDK in your project.
+Refer to the official documentation for examples on how to integrate and use the ZerionMobile SDK in your project:
+
+## Links 
 [Zerion API Documentation](https://developers.zerion.io/reference/intro/getting-started)
 
 ## Contributors
