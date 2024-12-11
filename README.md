@@ -1,6 +1,6 @@
 # ZerionMobile SDK
 
-ZerionMobile SDK contains the implementation of the Zerion API with corresponding methods and response DTOs.
+ZerionMobile SDK contains the implementation of the Zerion API with corresponding methods and responses.
 
 ## Features
 
