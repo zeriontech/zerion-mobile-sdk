@@ -31,7 +31,36 @@ implementation("com.zerion:mobile-sdk:<latest_version>")
 ```
 
 ## Usage
-Refer to the official documentation for examples on how to integrate and use the ZerionMobile SDK in your project:
+
+### Example of Usage in iOS:
+
+```swift
+import ZerionSDK
+
+// Initialize the SDK with your authorization key
+ZerionSDK.shared.initialize(authorization: "YOUR_AUTHORIZATION_KEY")
+
+// Get the Zerion API Repository
+let zerionApiRepository = ZerionSDK.shared.getZerionApiRepository()
+
+// Fetch wallet portfolio asynchronously
+Task {
+    do {
+        let response = try await zerionApiRepository.getWalletPortfolio(
+            address: "0x42b9df65b219b3dd36ff330a4dd8f327a6ada990"
+        )
+        
+        // Access the wallet positions distribution
+        if let positionsByWallet = response.data?.attributes.positions_distribution_by_type.wallet {
+            print(positionsByWallet)
+        } else {
+            print("No positions data available.")
+        }
+    } catch {
+        print("Failed to fetch wallet portfolio: \(error)")
+    }
+}
+```
 
 ## Links 
 [Zerion API Documentation](https://developers.zerion.io/reference/intro/getting-started)
