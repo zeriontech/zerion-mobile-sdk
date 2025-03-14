@@ -1,17 +1,12 @@
-package io.zerion.kmm.api.api
+package io.zerion.kmm.api.repository
 
-import io.ktor.client.HttpClient
-import io.ktor.client.call.body
-import io.ktor.client.request.get
-import io.ktor.client.request.parameter
+import io.zerion.kmm.api.api.ZerionAPI
 import io.zerion.kmm.api.api.ZerionApiConstants.DefaultValues
-import io.zerion.kmm.api.api.ZerionApiConstants.Params
 import io.zerion.kmm.api.models.PortfolioResponse
 import io.zerion.kmm.api.models.PositionsResponse
 import io.zerion.kmm.api.models.TransactionsResponse
 
-
-internal interface ZerionAPI {
+interface ZerionApiInteractor {
     suspend fun getWalletPortfolio(address: String): PortfolioResponse
 
     suspend fun getWalletPositions(
@@ -42,10 +37,10 @@ internal interface ZerionAPI {
     ): TransactionsResponse
 }
 
-internal class ZerionAPIImpl(private val client: HttpClient) : ZerionAPI {
+internal class ZerionApiInteractorImpl(private val api: ZerionAPI): ZerionApiInteractor {
 
     override suspend fun getWalletPortfolio(address: String): PortfolioResponse {
-        return client.get("wallets/$address/portfolio").body()
+        return api.getWalletPortfolio(address)
     }
 
     override suspend fun getWalletPositions(
@@ -59,16 +54,17 @@ internal class ZerionAPIImpl(private val client: HttpClient) : ZerionAPI {
         trash: String,
         sort: String
     ): PositionsResponse {
-        return client.get("wallets/$address/positions") {
-            parameter(Params.POSITIONS_FILTER, positionsFilter)
-            parameter(Params.CURRENCY, currency)
-            positionTypes?.let { parameter(Params.POSITION_TYPES, it.joinToString(",")) }
-            chainIds?.let { parameter(Params.CHAIN_IDS, it.joinToString(",")) }
-            fungibleIds?.let { parameter(Params.FUNGIBLE_IDS, it.joinToString(",")) }
-            dappIds?.let { parameter(Params.DAPP_IDS, it.joinToString(",")) }
-            parameter(Params.TRASH, trash)
-            parameter(Params.SORT, sort)
-        }.body()
+        return api.getWalletPositions(
+            address = address,
+            positionsFilter = positionsFilter,
+            currency = currency,
+            positionTypes = positionTypes,
+            chainIds = chainIds,
+            fungibleIds = fungibleIds,
+            dappIds = dappIds,
+            trash = trash,
+            sort = sort
+        )
     }
 
     override suspend fun getWalletTransactions(
@@ -85,18 +81,19 @@ internal class ZerionAPIImpl(private val client: HttpClient) : ZerionAPI {
         trash: String,
         fungibleImplementations: List<String>?
     ): TransactionsResponse {
-        return client.get("wallets/$address/transactions") {
-            parameter(Params.CURRENCY, currency)
-            parameter(Params.PAGE_SIZE, pageSize)
-            pageAfter?.let { parameter(Params.PAGE_AFTER, it) }
-            searchQuery?.let { parameter(Params.SEARCH_QUERY, it) }
-            operationTypes?.let { parameter(Params.OPERATION_TYPES, it.joinToString(",")) }
-            assetTypes?.let { parameter(Params.ASSET_TYPES, it.joinToString(",")) }
-            chainIds?.let { parameter(Params.CHAIN_IDS, it.joinToString(",")) }
-            minMinedAt?.let { parameter(Params.MIN_MINED_AT, it) }
-            maxMinedAt?.let { parameter(Params.MAX_MINED_AT, it) }
-            parameter(Params.TRASH, trash)
-            fungibleImplementations?.let { parameter(Params.FUNGIBLE_IMPLEMENTATIONS, it.joinToString(",")) }
-        }.body()
+        return api.getWalletTransactions(
+            address = address,
+            currency = currency,
+            pageSize = pageSize,
+            pageAfter = pageAfter,
+            searchQuery = searchQuery,
+            operationTypes = operationTypes,
+            assetTypes = assetTypes,
+            chainIds = chainIds,
+            minMinedAt = minMinedAt,
+            maxMinedAt = maxMinedAt,
+            trash = trash,
+            fungibleImplementations = fungibleImplementations
+        )
     }
 }

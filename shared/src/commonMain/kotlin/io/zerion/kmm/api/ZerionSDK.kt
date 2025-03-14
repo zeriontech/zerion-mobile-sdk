@@ -4,14 +4,14 @@ import io.github.aakira.napier.Napier
 import io.zerion.kmm.api.api.ZerionAPI
 import io.zerion.kmm.api.api.ZerionAPIImpl
 import io.zerion.kmm.api.httpclient.buildHttpClient
-import io.zerion.kmm.api.repository.ZerionAPIRepository
-import io.zerion.kmm.api.repository.ZerionAPIRepositoryImpl
+import io.zerion.kmm.api.repository.ZerionApiInteractor
+import io.zerion.kmm.api.repository.ZerionApiInteractorImpl
 import io.zerion.kmm.api.utils.Logging
 
 object ZerionSDK {
 
     private lateinit var api: ZerionAPI
-    private lateinit var zerionApiRepository: ZerionAPIRepository
+    private lateinit var zerionApiInteractor: ZerionApiInteractor
 
     fun initialize(authorization: String): Boolean {
         return try {
@@ -24,7 +24,7 @@ object ZerionSDK {
             val client = buildHttpClient(authorization)
 
             api = ZerionAPIImpl(client)
-            zerionApiRepository = ZerionAPIRepositoryImpl(api)
+            zerionApiInteractor = ZerionApiInteractorImpl(api)
 
             true
         } catch (e: Exception) {
@@ -33,11 +33,11 @@ object ZerionSDK {
         }
     }
 
-    fun getZerionApiRepository(): ZerionAPIRepository {
-        if (!this::zerionApiRepository.isInitialized) {
+    fun getZerionApiInteractor(): ZerionApiInteractor {
+        if (!this::zerionApiInteractor.isInitialized) {
             throw IllegalStateException("ZerionLibrary is not initialized. Call initialize() first.")
         }
 
-        return zerionApiRepository
+        return zerionApiInteractor
     }
 }
