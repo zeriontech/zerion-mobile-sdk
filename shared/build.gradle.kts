@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
-    kotlin("plugin.serialization") version "2.0.20"
+    kotlin("plugin.serialization") version libs.versions.kotlin
 }
 
 kotlin {
@@ -50,11 +50,6 @@ kotlin {
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
         }
-//        named { it.lowercase().startsWith("ios") }.configureEach {
-//            languageSettings {
-//                optIn("kotlinx.cinterop.ExperimentalForeignApi")
-//            }
-//        }
     }
 }
 

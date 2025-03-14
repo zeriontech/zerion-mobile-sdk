@@ -1,6 +1,8 @@
 package io.zerion.kmm.api.api
 
 internal object ZerionApiConstants {
+    const val DEFAULT_API_URL = "https://api.zerion.io/v1/"
+
     object Params {
         const val POSITIONS_FILTER = "filter[positions]"
         const val CURRENCY = "currency"
@@ -23,14 +25,6 @@ internal object ZerionApiConstants {
 
     object DefaultValues {
         const val DEFAULT_PAGE_SIZE = 20
-
-        const val POSITIONS_FILTER_SIMPLE = "only_simple"
-        const val POSITIONS_FILTER_COMPLEX = "only_complex"
-        const val POSITIONS_FILTER_NONE = "no_filter"
         const val CURRENCY_USD = "usd"
-        const val TRASH_NON_TRASH = "only_non_trash"
-        const val TRASH_TRASH = "only_trash"
-        const val SORT_VALUE = "value"
-        const val TRASH_NO_FILTER = "no_filter"
     }
 } 

@@ -3,8 +3,6 @@ package io.zerion.kmm.api.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-typealias ChainSlug = String
-
 @Serializable
 data class PortfolioResponse(
     @SerialName("links") val links: Links? = null,
@@ -26,7 +24,7 @@ data class PortfolioData(
 @Serializable
 data class PortfolioAttributes(
     @SerialName("positions_distribution_by_type") val positions_distribution_by_type: PositionsDistributionByType,
-    @SerialName("positions_distribution_by_chain") val positions_distribution_by_chain: Map<ChainSlug, Double>,
+    @SerialName("positions_distribution_by_chain") val positions_distribution_by_chain: Map<ChainId, Double>,
     @SerialName("total") val total: Total,
     @SerialName("changes") val changes: Changes
 )

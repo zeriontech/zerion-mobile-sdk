@@ -8,6 +8,7 @@ The SDK is written using Kotlin Multiplatform Mobile (KMM), making it flexible a
 - iOS projects
 - Android projects
 - KMM / CMM projects
+- Built-in error handling for common API errors
 
 ## Getting Started
 
@@ -32,28 +33,82 @@ implementation("com.zerion:mobile-sdk:<latest_version>")
 
 ## Usage
 
+### Initialization
+
+The SDK can be initialized with either just an authorization key (using the default API URL) or with a custom API URL:
+
+```kotlin
+// Initialize with default API URL
+ZerionSDK.initialize("YOUR_AUTHORIZATION_KEY")
+
+// Or initialize with custom API URL
+ZerionSDK.initialize(
+    authorization = "YOUR_AUTHORIZATION_KEY",
+    apiUrl = "https://your-custom-api.com/v1/",
+    isWithLogging = true // Optional: Enable logging
+)
+```
+
+For iOS:
+```swift
+// Initialize with default API URL
+ZerionSDK.shared.initialize(authorization: "YOUR_AUTHORIZATION_KEY")
+
+// Or initialize with custom API URL
+ZerionSDK.shared.initialize(
+    authorization: "YOUR_AUTHORIZATION_KEY",
+    apiUrl: "https://your-custom-api.com/v1/"
+)
+```
+
+### Error Handling
+
+The SDK provides built-in error handling for common API errors. These are thrown as specific exceptions that you can catch and handle:
+
+```kotlin
+try {
+    val positions = ZerionSDK.getWalletPositions(address = "0x...")
+} catch (e: ZerionApiException) {
+    when (e) {
+        is ZerionApiException.MalformedParametersException -> {
+            // Handle 400 Bad Request - malformed parameters
+        }
+        is ZerionApiException.UnauthorizedException -> {
+            // Handle 401 Unauthorized - invalid API key
+        }
+        is ZerionApiException.TooManyRequestsException -> {
+            // Handle 429 Too Many Requests - rate limit exceeded
+        }
+        is ZerionApiException.ZerionInitializationException -> {
+            // Handle SDK initialization errors
+        }
+        is ZerionApiException.ZerionAuthorizationException -> {
+            // Handle authorization errors
+        }
+        is ZerionApiException.GeneralException -> {
+            // Handle other API errors
+        }
+    }
+}
+```
+
+For iOS, these errors are mapped to NSError with appropriate error codes and descriptions.
+
 ### Example of Usage in Kotlin:
 
 ```kotlin
-// Initialize the SDK with your authorization key
-ZerionSDK.initialize("YOUR_AUTHORIZATION_KEY")
-
-// Get the Zerion API Interactor
-val zerionApiInteractor = ZerionSDK.getZerionApiInteractor()
-
 // Example: Fetch wallet positions with filters
 suspend fun getWalletPositions(address: String) {
     try {
-        val positions = zerionApiInteractor.getWalletPositions(
+        val positions = ZerionSDK.getWalletPositions(
             address = address,
-            chainIds = listOf("ethereum", "polygon"),
-            positionTypes = listOf("wallet", "deposited")
+            chainIds = listOf("ethereum", "polygon")
         )
         positions.data.forEach { position ->
             println("Position: ${position.attributes.name}")
         }
-    } catch (e: Exception) {
-        println("Failed to fetch wallet positions: ${e.message}")
+    } catch (e: ZerionApiException) {
+        println("API Error: ${e.message}")
     }
 }
 ```
@@ -63,25 +118,18 @@ suspend fun getWalletPositions(address: String) {
 ```swift
 import ZerionSDK
 
-// Initialize the SDK with your authorization key
-ZerionSDK.shared.initialize(authorization: "YOUR_AUTHORIZATION_KEY")
-
-// Get the Zerion API Interactor
-let zerionApiInteractor = ZerionSDK.shared.getZerionApiInteractor()
-
 // Example: Fetch wallet positions with filters
 Task {
     do {
-        let positions = try await zerionApiInteractor.getWalletPositions(
+        let positions = try await ZerionSDK.shared.getWalletPositions(
             address: "0x42b9df65b219b3dd36ff330a4dd8f327a6ada990",
-            chainIds: ["ethereum", "polygon"],
-            positionTypes: ["wallet"]
+            chainIds: ["ethereum", "polygon"]
         )
         positions.data.forEach { position in
             print("Position: \(position.attributes.name)")
         }
     } catch {
-        print("Failed to fetch wallet positions: \(error)")
+        print("API Error: \(error.localizedDescription)")
     }
 }
 ```

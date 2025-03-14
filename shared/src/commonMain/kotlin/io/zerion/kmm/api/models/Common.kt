@@ -3,6 +3,8 @@ package io.zerion.kmm.api.models
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+typealias ChainId = String
+
 @Serializable
 data class FungibleInfo(
     @SerialName("name") val name: String,
@@ -24,7 +26,7 @@ data class FungibleFlags(
 
 @Serializable
 data class Implementation(
-    @SerialName("chain_id") val chainId: String,
+    @SerialName("chain_id") val chainId: ChainId,
     @SerialName("address") val address: String? = null,
     @SerialName("decimals") val decimals: Int
 )

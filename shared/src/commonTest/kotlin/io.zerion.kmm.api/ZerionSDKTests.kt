@@ -1,6 +1,6 @@
 package io.zerion.kmm.api
 
-import io.zerion.kmm.api.api.ZerionApiConstants.DefaultValues.POSITIONS_FILTER_COMPLEX
+import io.zerion.kmm.api.models.PositionFilter
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -27,6 +27,7 @@ class ZerionSDKTests {
     fun shouldInitializeLibrary() {
         val isInitialized =
             ZerionSDK.initialize("emtfZGV2XzcxMDI1ODBkMTU1YjRjMDI4OTExOTRiMWFkNTUzYjM0Og==")
+
         assertEquals(true, isInitialized)
     }
 
@@ -45,7 +46,6 @@ class ZerionSDKTests {
 
             // Basic request with minimal parameters
             val response = ZerionSDK
-                .getZerionApiInteractor()
                 .getWalletPositions(
                     address = testWalletAddress
                 )
@@ -65,10 +65,10 @@ class ZerionSDKTests {
 
             // Request with multiple filters
             val response = ZerionSDK
-                .getZerionApiInteractor()
+                
                 .getWalletPositions(
                     address = testWalletAddress,
-                    positionsFilter = POSITIONS_FILTER_COMPLEX,
+                    positionsFilter = PositionFilter.ONLY_COMPLEX.apiValue,
                     chainIds = listOf("ethereum"),
                     positionTypes = listOf("wallet", "deposit")
                 )
@@ -86,10 +86,9 @@ class ZerionSDKTests {
 
             // Request positions filtered by specific DApps
             val response = ZerionSDK
-                .getZerionApiInteractor()
                 .getWalletPositions(
                     address = testWalletAddress,
-                    positionsFilter = POSITIONS_FILTER_COMPLEX,
+                    positionsFilter = PositionFilter.ONLY_COMPLEX.apiValue,
                     dappIds = listOf("aave-v3", "uniswap-v3")
                 )
 
@@ -107,7 +106,6 @@ class ZerionSDKTests {
 
             // First page
             val firstPage = ZerionSDK
-                .getZerionApiInteractor()
                 .getWalletTransactions(
                     address = testWalletAddress,
                     pageSize = 50
@@ -128,7 +126,6 @@ class ZerionSDKTests {
 
             // Request with multiple filters
             val response = ZerionSDK
-                .getZerionApiInteractor()
                 .getWalletTransactions(
                     address = testWalletAddress,
                     pageSize = 20,
@@ -150,7 +147,6 @@ class ZerionSDKTests {
 
             // Request NFT transactions with search
             val response = ZerionSDK
-                .getZerionApiInteractor()
                 .getWalletTransactions(
                     address = testWalletAddress,
                     pageSize = 15,

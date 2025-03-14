@@ -6,9 +6,13 @@ import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.zerion.kmm.api.api.ZerionApiConstants.DefaultValues
 import io.zerion.kmm.api.api.ZerionApiConstants.Params
+import io.zerion.kmm.api.models.ChainId
 import io.zerion.kmm.api.models.PortfolioResponse
+import io.zerion.kmm.api.models.PositionFilter
 import io.zerion.kmm.api.models.PositionsResponse
+import io.zerion.kmm.api.models.SortType
 import io.zerion.kmm.api.models.TransactionsResponse
+import io.zerion.kmm.api.models.TrashFilter
 
 
 internal interface ZerionAPI {
@@ -16,14 +20,14 @@ internal interface ZerionAPI {
 
     suspend fun getWalletPositions(
         address: String,
-        positionsFilter: String = DefaultValues.POSITIONS_FILTER_SIMPLE,
+        positionsFilter: String = PositionFilter.ONLY_SIMPLE.apiValue,
         currency: String = DefaultValues.CURRENCY_USD,
         positionTypes: List<String>? = null,
-        chainIds: List<String>? = null,
+        chainIds: List<ChainId>? = null,
         fungibleIds: List<String>? = null,
         dappIds: List<String>? = null,
-        trash: String = DefaultValues.TRASH_NON_TRASH,
-        sort: String = DefaultValues.SORT_VALUE
+        trash: String = TrashFilter.ONLY_NON_TRASH.apiValue,
+        sort: String = SortType.VALUE_ASCENDING.apiValue
     ): PositionsResponse
 
     suspend fun getWalletTransactions(
@@ -34,10 +38,10 @@ internal interface ZerionAPI {
         searchQuery: String? = null,
         operationTypes: List<String>? = null,
         assetTypes: List<String>? = null,
-        chainIds: List<String>? = null,
+        chainIds: List<ChainId>? = null,
         minMinedAt: Long? = null,
         maxMinedAt: Long? = null,
-        trash: String = DefaultValues.TRASH_NO_FILTER,
+        trash: String = TrashFilter.NO_FILTER.apiValue,
         fungibleImplementations: List<String>? = null
     ): TransactionsResponse
 }
@@ -53,7 +57,7 @@ internal class ZerionAPIImpl(private val client: HttpClient) : ZerionAPI {
         positionsFilter: String,
         currency: String,
         positionTypes: List<String>?,
-        chainIds: List<String>?,
+        chainIds: List<ChainId>?,
         fungibleIds: List<String>?,
         dappIds: List<String>?,
         trash: String,
@@ -79,7 +83,7 @@ internal class ZerionAPIImpl(private val client: HttpClient) : ZerionAPI {
         searchQuery: String?,
         operationTypes: List<String>?,
         assetTypes: List<String>?,
-        chainIds: List<String>?,
+        chainIds: List<ChainId>?,
         minMinedAt: Long?,
         maxMinedAt: Long?,
         trash: String,
