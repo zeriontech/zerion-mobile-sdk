@@ -1,6 +1,7 @@
 package io.zerion.kmm.api
 
 import io.zerion.kmm.api.models.PositionFilter
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -21,7 +22,7 @@ private  object OperationTypes {
 
 class ZerionSDKTests {
 
-    private val testWalletAddress = "0x42b9dF65B219B3dD36FF330A4dD8f327A6Ada990"
+    private val testWalletAddress = "0x7e5ce10826ee167de897d262fcc9976f609ecd2b"
 
     @Test
     fun shouldInitializeLibrary() {
