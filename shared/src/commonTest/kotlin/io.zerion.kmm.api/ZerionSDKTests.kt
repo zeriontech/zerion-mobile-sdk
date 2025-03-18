@@ -22,7 +22,7 @@ private  object OperationTypes {
 
 class ZerionSDKTests {
 
-    private val testWalletAddress = "0x7e5ce10826ee167de897d262fcc9976f609ecd2b"
+    private val testWalletAddress = "0x67c0fc4b0490ab7e76c08c2bbd30fac0059bbc7a"
 
     @Test
     fun shouldInitializeLibrary() {

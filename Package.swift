@@ -15,8 +15,8 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "ZerionMobileSDK",
-            url: "https://github.com/uladzerion/ZerionMobileSDK/releases/download/1.0.0/ZerionMobileSDK.xcframework.zip",
-            checksum:"23a1b0de6cbb52ad48a70ff49ffd3c325aa2a431eeaa50046284b4d60a8c9424"
+            url: "https://github.com/zeriontech/zerion-mobile-sdk/releases/download/0.0.1/ZerionMobileSDK.xcframework.zip",
+            checksum:"78a89c7b8c77041485854894932a4930a82a9dcd69b1e03f1861f7119b395938"
         )
     ]
 )

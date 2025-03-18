@@ -7,7 +7,6 @@ ZerionMobile SDK contains the implementation of the Zerion API with correspondin
 The SDK is written using Kotlin Multiplatform Mobile (KMM), making it flexible and compatible with:
 - iOS projects
 - Android projects
-- KMM / CMM projects
 - Built-in error handling for common API errors
 
 ## Getting Started
@@ -19,17 +18,11 @@ To start using the ZerionMobile SDK, you will need an authorization key. You can
 ### For Android
 Include the SDK in your project's dependencies in the `build.gradle` file:
 ```gradle
-implementation("com.zerion:mobile-sdk:<latest_version>")
+implementation("io.github.uladzerion:zerion-mobile-sdk-android:<latest_version>")
 ```
 
 ### For iOS
 Add the SDK as a dependency in your `Podfile` or include it in your Swift Package Manager configuration.
-
-### For KMM / CMM
-Add the SDK to the `commonMain` dependencies in your `build.gradle.kts` file:
-```kotlin
-implementation("com.zerion:mobile-sdk:<latest_version>")
-```
 
 ## Usage
 
